@@ -8,16 +8,16 @@ import {
   TouchableOpacity,
   Image,
   SafeAreaView,
-  FlatList,
+  Platform,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 // Données simulées (à remplacer par Firebase plus tard)
 const MOCK_DATA = {
   membre: {
-    nom: "أمينة",
-    prenom: "بتعلي",
-    avatar: null, // Ajouter URL d'avatar si dispo
+    nom: "بتعلي",
+    prenom: "أمينة",
+    avatar: null,
   },
   stats: {
     programmesActifs: 2,
@@ -65,11 +65,6 @@ export default function DashboardScreen({ navigation }) {
     const fetchData = async () => {
       try {
         // Ici vous ferez vos appels Firebase
-        // const user = await getAuth().currentUser;
-        // const membreData = await getDoc(doc(db, "membres", user.uid));
-        // const programmesData = await getDocs(query(collection(db, "programmes"), where("membreId", "==", user.uid)));
-
-        // Données simulées pour l'instant
         setMembre(MOCK_DATA.membre);
         setStats(MOCK_DATA.stats);
         setProgrammes(MOCK_DATA.programmes);
@@ -85,9 +80,9 @@ export default function DashboardScreen({ navigation }) {
 
   // Fonction pour obtenir la couleur de progression
   const getProgressColor = (progress) => {
-    if (progress >= 80) return "#16A34A"; // Vert
-    if (progress >= 50) return "#EAB308"; // Jaune
-    return "#F97316"; // Orange
+    if (progress >= 80) return "#16A34A";
+    if (progress >= 50) return "#EAB308";
+    return "#F97316";
   };
 
   // Fonction pour obtenir le libellé du statut en arabe
@@ -113,9 +108,7 @@ export default function DashboardScreen({ navigation }) {
       <TouchableOpacity
         style={styles.programmeCard}
         activeOpacity={0.7}
-        onPress={() =>
-          navigation.navigate("ProgrammeDetail", { programmeId: item.id })
-        }
+        onPress={() => console.log("Détail programme", item.id)}
       >
         <View style={styles.programmeHeader}>
           <Text style={styles.programmeNom}>{item.nom}</Text>
@@ -181,25 +174,23 @@ export default function DashboardScreen({ navigation }) {
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="dark" />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        {/* En-tête avec photo et nom */}
+        {/* 🟢 EN-TÊTE MODIFIÉ - Initiales + Navigation vers Profil */}
         <View style={styles.header}>
           <View style={styles.userInfo}>
-            <View style={styles.avatarContainer}>
-              {membre?.avatar ? (
-                <Image source={{ uri: membre.avatar }} style={styles.avatar} />
-              ) : (
-                <View style={styles.avatarPlaceholder}>
-                  <Text style={styles.avatarText}>
-                    {membre?.prenom?.[0]}
-                    {membre?.nom?.[0]}
-                  </Text>
-                </View>
-              )}
-            </View>
+            <TouchableOpacity
+              style={styles.avatarContainer}
+              onPress={() => navigation.navigate("Profile")}
+              activeOpacity={0.7}
+            >
+              <View style={styles.avatarPlaceholder}>
+                <Text style={styles.avatarText}>{membre?.prenom}</Text>
+              </View>
+            </TouchableOpacity>
+
             <View style={styles.userTextContainer}>
               <Text style={styles.welcomeText}>لوحة تحكم</Text>
               <Text style={styles.userName}>
-                {membre?.prenom} {membre?.nom}
+                {membre?.prenom || "أمينة"} {membre?.nom || "بتعلي"}
               </Text>
               <View style={styles.roleBadge}>
                 <Text style={styles.roleText}>العضو</Text>
@@ -233,7 +224,7 @@ export default function DashboardScreen({ navigation }) {
         <View style={styles.newProgrammeSection}>
           <TouchableOpacity
             style={styles.newProgrammeButton}
-            onPress={() => navigation.navigate("NewProgramme")}
+            onPress={() => console.log("Nouveau programme")}
             activeOpacity={0.8}
           >
             <Text style={styles.newProgrammeIcon}>+</Text>
@@ -247,7 +238,7 @@ export default function DashboardScreen({ navigation }) {
             <Text style={styles.sectionTitle}>برامجك الحالية</Text>
             {programmes.length > 3 && (
               <TouchableOpacity
-                onPress={() => navigation.navigate("AllProgrammes")}
+                onPress={() => console.log("Tous les programmes")}
               >
                 <Text style={styles.seeAllText}>عرض الكل</Text>
               </TouchableOpacity>
