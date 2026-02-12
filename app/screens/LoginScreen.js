@@ -89,9 +89,9 @@ export default function LoginScreen({ navigation }) {
             </TouchableOpacity>
             <View style={styles.signupContainer}>
               <Text style={styles.signupText}>ليس لديك حساب؟ </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                  <Text style={styles.signupLink}>إنشاء حساب جديد</Text>
-                </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+                <Text style={styles.signupLink}>إنشاء حساب جديد</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 20,
   },
-  
+
   badgeText: {
     color: "white",
     fontWeight: "bold",
